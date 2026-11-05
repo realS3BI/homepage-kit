@@ -1,5 +1,9 @@
 {
   "name": "homepage-kit",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/realS3BI/homepage-kit.git"
+  },
   "private": true,
   "version": "1.0.0",
   "type": "module",

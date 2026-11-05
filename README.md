@@ -31,14 +31,16 @@ Tailscale und OpenClaw sind beide optional. Ohne Tailscale läuft die Vorschau n
 
 ## Einrichten
 
-1. Klick auf GitHub auf **Use this template** und lege ein eigenes, privates Repo an.
+1. Öffne [realS3BI/homepage-kit](https://github.com/realS3BI/homepage-kit), klick auf **Use this template** und lege ein eigenes, privates Repo an.
 2. Klone es nach `~/Developer`. Die Ordner Dokumente und Schreibtisch synchronisiert iCloud, dort fällt die Vorschau früher oder später aus.
 
    ```sh
    mkdir -p ~/Developer && cd ~/Developer
-   git clone https://github.com/DEIN-NAME/DEIN-REPO.git
-   cd DEIN-REPO
+   git clone https://github.com/realS3BI/homepage-kit.git
+   cd homepage-kit
    ```
+
+   Hast du in Schritt 1 ein eigenes Repo angelegt, klonst du stattdessen dessen Adresse.
 
 3. Starte das Setup:
 
@@ -61,7 +63,7 @@ Du kannst das Setup jederzeit erneut ausführen, auch um Skill-Namen, Stichworte
 
 Du kannst das auch OpenClaw überlassen. Ein Agent übergibt die Antworten als Optionen:
 
-> Klone https://github.com/DEIN-NAME/DEIN-REPO nach ~/Developer und führe im Repo `npm run setup -- --slug homepage --skill website --triggers "Firmenwebsite, unsere Homepage"` aus. Schick mir danach die Adresse der Vorschau.
+> Klone https://github.com/realS3BI/homepage-kit nach ~/Developer und führe im Repo `npm run setup -- --slug homepage --skill website --triggers "Firmenwebsite, unsere Homepage"` aus. Schick mir danach die Adresse der Vorschau.
 
 ## Loslegen
 
