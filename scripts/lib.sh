@@ -23,18 +23,18 @@ die() {
 # setup.sh sets KIT_FORCE_* to address an older installation after the settings changed.
 SITE_SLUG="${KIT_FORCE_SLUG:-${SITE_SLUG:-homepage}}"
 case "$SITE_SLUG" in
-  *[!a-z0-9-]* | -* | '') die "SITE_SLUG in kit.env darf nur Kleinbuchstaben, Ziffern und Bindestriche enthalten (aktuell: '$SITE_SLUG')." ;;
+  *[!a-z0-9-]* | -* | '') die "SITE_SLUG in kit.env may only contain lowercase letters, digits and hyphens (currently: '$SITE_SLUG')." ;;
 esac
 
 SKILL_NAME="${KIT_FORCE_SKILL:-${SKILL_NAME:-$SITE_SLUG}}"
 case "$SKILL_NAME" in
-  *[!a-z0-9-]* | -* | '') die "SKILL_NAME in kit.env darf nur Kleinbuchstaben, Ziffern und Bindestriche enthalten (aktuell: '$SKILL_NAME')." ;;
+  *[!a-z0-9-]* | -* | '') die "SKILL_NAME in kit.env may only contain lowercase letters, digits and hyphens (currently: '$SKILL_NAME')." ;;
 esac
 SKILL_TRIGGERS="${SKILL_TRIGGERS:-}"
 
 PREVIEW_PORT="${KIT_FORCE_PORT:-${PREVIEW_PORT:-4321}}"
 case "$PREVIEW_PORT" in
-  *[!0-9]* | '') die "PREVIEW_PORT in kit.env muss eine Zahl sein (aktuell: '$PREVIEW_PORT')." ;;
+  *[!0-9]* | '') die "PREVIEW_PORT in kit.env must be a number (currently: '$PREVIEW_PORT')." ;;
 esac
 
 LAN_PORT="${LAN_PORT:-}"
@@ -49,7 +49,9 @@ PREVIEW_LABEL="dev.homepage-kit.$SITE_SLUG.preview"
 LAN_LABEL="dev.homepage-kit.$SITE_SLUG.lan"
 LAUNCH_AGENTS_DIR="$HOME/Library/LaunchAgents"
 HEALTH_URL="http://127.0.0.1:$PREVIEW_PORT/"
-WATCHDOG_NAME="Website-Vorschau-Wächter ($SITE_SLUG)"
+WATCHDOG_NAME="Website preview watchdog ($SITE_SLUG)"
+# Name used by earlier versions of the kit. Setup and uninstall remove jobs under it too.
+WATCHDOG_LEGACY_NAME="Website-Vorschau-Wächter ($SITE_SLUG)"
 
 is_macos() { [ "$(uname -s)" = "Darwin" ]; }
 

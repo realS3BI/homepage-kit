@@ -32,7 +32,7 @@ Go through the blocks in order, at most three questions per message. Skip what t
 3. **Services.** The four to eight most important services, each in one sentence. What sets the business apart from others nearby?
 4. **People.** Who works there, with what training? Are there photos?
 5. **Frequent questions.** Which questions do customers ask most often on the phone? These become the FAQ section.
-6. **Language.** Sie or Du? Is English or another language needed? If not, remove that language in `src/content/index.ts`.
+6. **Languages.** Which language is the main language of the website? Should there be translations, and into which languages, or is one language enough? Formal or informal address? Then set it up as described under "Languages" in `AGENTS.md`: set `defaultLocale`, add a file for every further language and remove the sample languages that aren't wanted.
 7. **Design.** Is there a logo and fixed colors? Based on the evaluated references, describe two directions in one sentence each and let them choose. Without references, propose two directions that suit the industry.
 8. **Legal.** Details for the imprint, data controller for privacy. Tell them that the imprint and privacy policy should be legally reviewed before publishing.
 9. **Domain and server.** Is there already a domain? Where should the website run?
@@ -42,11 +42,11 @@ Done when every field in `BRIEF.md` has a value or is listed under "Open items".
 ## 4. Build the first draft
 
 1. Enter the facts in `src/content/business.ts` and pick the matching `schemaType`.
-2. Rewrite the texts in `src/content/de.ts` and in every other language. Nothing of the sample content remains.
+2. Write the texts for every language in `src/content/<code>.ts`, the default language first. Nothing of the sample content remains.
 3. Adapt the sections to the business. Remove what doesn't fit, such as opening hours for a business without fixed hours. Add what is missing, with its own type in `src/content/types.ts`.
 4. Implement the chosen direction: colors, fonts, spacing and radii in `src/styles/tokens.css`, the layout in the components. Check the contrast of every text color against its background.
 5. Replace `public/favicon.svg` with the logo or a mark in the main color.
-6. Move photos from `beispiele/eigenes-material/` to `src/assets/` and use them.
+6. Move photos from `examples/own-material/` to `src/assets/` and use them.
 7. Set `demo` in `business.ts` to `false` once no sample content is left.
 
 Done when `npm run check` passes and `npm run todos` shows only placeholders that are listed under "Open items" in `BRIEF.md`.

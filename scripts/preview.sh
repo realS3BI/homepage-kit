@@ -13,7 +13,7 @@ ASTRO_BIN="$ROOT_DIR/node_modules/astro/bin/astro.mjs"
 GUI_DOMAIN="gui/$(id -u)"
 
 require_macos() {
-  is_macos || die "Der Vorschau-Dienst nutzt launchd und läuft nur auf macOS. Auf anderen Systemen: npm run dev"
+  is_macos || die "The preview service uses launchd and only runs on macOS. On other systems: npm run dev"
 }
 
 write_plist() {
@@ -63,7 +63,7 @@ load_agent() {
   local tries=10
   until launchctl bootstrap "$GUI_DOMAIN" "$1" >/dev/null 2>&1; do
     tries=$((tries - 1))
-    [ "$tries" -gt 0 ] || die "launchd konnte $2 nicht laden. Prüfe: launchctl print $GUI_DOMAIN/$2"
+    [ "$tries" -gt 0 ] || die "launchd could not load $2. Check: launchctl print $GUI_DOMAIN/$2"
     sleep 1
   done
 }
@@ -78,30 +78,30 @@ agent_loaded() { launchctl print "$GUI_DOMAIN/$1" >/dev/null 2>&1; }
 
 cmd_install() {
   require_macos
-  command -v node >/dev/null 2>&1 || die "Node.js fehlt. Installiere es mit: brew install node"
-  [ -f "$ASTRO_BIN" ] || die "Abhängigkeiten fehlen. Führe zuerst aus: npm install"
+  command -v node >/dev/null 2>&1 || die "Node.js is missing. Install it with: brew install node"
+  [ -f "$ASTRO_BIN" ] || die "Dependencies are missing. Run this first: npm install"
 
   if in_synced_folder; then
-    warn "Das Repo liegt in einem iCloud-synchronisierten Ordner ($ROOT_DIR)."
-    warn "macOS kann dort Dateien auslagern, dann fällt die Vorschau mit Fehler -11 aus. Verschiebe es nach ~/Developer."
+    warn "The repo is in a folder synced by iCloud ($ROOT_DIR)."
+    warn "macOS can offload files from there, and then the preview fails with error -11. Move it to ~/Developer."
   fi
 
   if ! agent_loaded "$PREVIEW_LABEL" && port_in_use "$PREVIEW_PORT"; then
-    die "Port $PREVIEW_PORT ist bereits belegt. Trage in kit.env einen freien PREVIEW_PORT ein."
+    die "Port $PREVIEW_PORT is already in use. Set a free PREVIEW_PORT in kit.env."
   fi
 
   write_plist "$PREVIEW_PLIST" "$PREVIEW_LABEL" run preview
   load_agent "$PREVIEW_PLIST" "$PREVIEW_LABEL"
   if wait_live 45; then
-    ok "Vorschau läuft: $HEALTH_URL"
+    ok "Preview running: $HEALTH_URL"
   else
-    die "Die Vorschau antwortet nicht. Log: $STATE_DIR/preview.log"
+    die "The preview does not respond. Log: $STATE_DIR/preview.log"
   fi
 
   if [ -n "$LAN_PORT" ]; then
     write_plist "$LAN_PLIST" "$LAN_LABEL" lan-run lan-proxy
     load_agent "$LAN_PLIST" "$LAN_LABEL"
-    ok "WLAN-Zugriff aktiv auf Port $LAN_PORT (ohne Anmeldung, nur im vertrauten Netz nutzen)"
+    ok "Wi-Fi access active on port $LAN_PORT (no login, use only on a trusted network)"
   elif [ -f "$LAN_PLIST" ]; then
     unload_agent "$LAN_PLIST" "$LAN_LABEL"
   fi
@@ -111,7 +111,7 @@ cmd_uninstall() {
   require_macos
   unload_agent "$PREVIEW_PLIST" "$PREVIEW_LABEL"
   unload_agent "$LAN_PLIST" "$LAN_LABEL"
-  ok "Vorschau-Dienste entfernt"
+  ok "Preview services removed"
 }
 
 # Entry point for launchd. astro.config.mjs sets strictPort, so a taken port
@@ -122,7 +122,7 @@ cmd_run() {
 }
 
 cmd_lan_run() {
-  [ -n "$LAN_PORT" ] || die "LAN_PORT ist nicht gesetzt."
+  [ -n "$LAN_PORT" ] || die "LAN_PORT is not set."
   exec node "$ROOT_DIR/scripts/lan-proxy.mjs" "$LAN_PORT" "$PREVIEW_PORT"
 }
 
@@ -131,16 +131,16 @@ kickstart() { launchctl kickstart -k "$GUI_DOMAIN/$PREVIEW_LABEL" >/dev/null 2>&
 # Health check for the watchdog. Exit 0 = healthy or repaired, 1 = still down.
 cmd_check() {
   if is_live; then
-    echo "Vorschau gesund: $HEALTH_URL"
+    echo "Preview healthy: $HEALTH_URL"
     return 0
   fi
   require_macos
-  [ -f "$PREVIEW_PLIST" ] || die "Vorschau-Dienst ist nicht eingerichtet. Führe aus: npm run setup"
+  [ -f "$PREVIEW_PLIST" ] || die "The preview service is not set up. Run: npm run setup"
   agent_loaded "$PREVIEW_LABEL" || launchctl bootstrap "$GUI_DOMAIN" "$PREVIEW_PLIST" >/dev/null 2>&1 || true
 
   kickstart || true
   if wait_live 30; then
-    echo "Vorschau neu gestartet: $HEALTH_URL"
+    echo "Preview restarted: $HEALTH_URL"
     return 0
   fi
 
@@ -148,58 +148,58 @@ cmd_check() {
   rm -rf "$ROOT_DIR/node_modules/.vite" "$ROOT_DIR/.astro"
   kickstart || true
   if wait_live 45; then
-    echo "Vorschau nach Cache-Bereinigung neu gestartet: $HEALTH_URL"
+    echo "Preview restarted after clearing the cache: $HEALTH_URL"
     return 0
   fi
 
-  echo "Vorschau startet nicht. Letzte Log-Zeilen:" >&2
+  echo "Preview does not start. Last log lines:" >&2
   tail -n 15 "$STATE_DIR/preview.log" >&2 2>/dev/null || true
   return 1
 }
 
 cmd_restart() {
   require_macos
-  [ -f "$PREVIEW_PLIST" ] || die "Vorschau-Dienst ist nicht eingerichtet. Führe aus: npm run setup"
+  [ -f "$PREVIEW_PLIST" ] || die "The preview service is not set up. Run: npm run setup"
   agent_loaded "$PREVIEW_LABEL" || launchctl bootstrap "$GUI_DOMAIN" "$PREVIEW_PLIST" >/dev/null 2>&1 || true
   kickstart || true
-  wait_live 45 || die "Die Vorschau antwortet nach dem Neustart nicht. Log: $STATE_DIR/preview.log"
-  ok "Vorschau neu gestartet: $HEALTH_URL"
+  wait_live 45 || die "The preview does not respond after the restart. Log: $STATE_DIR/preview.log"
+  ok "Preview restarted: $HEALTH_URL"
 }
 
 cmd_status() {
-  if is_live; then ok "Vorschau antwortet: $HEALTH_URL"; else warn "Vorschau antwortet nicht: $HEALTH_URL"; fi
+  if is_live; then ok "Preview responds: $HEALTH_URL"; else warn "Preview does not respond: $HEALTH_URL"; fi
   if is_macos; then
-    if agent_loaded "$PREVIEW_LABEL"; then ok "launchd-Dienst geladen: $PREVIEW_LABEL"; else warn "launchd-Dienst nicht geladen: $PREVIEW_LABEL"; fi
+    if agent_loaded "$PREVIEW_LABEL"; then ok "launchd service loaded: $PREVIEW_LABEL"; else warn "launchd service not loaded: $PREVIEW_LABEL"; fi
   fi
   local url
-  if url="$(tailnet_url)"; then info "  Tailscale-Adresse: $url"; fi
+  if url="$(tailnet_url)"; then info "  Tailscale address: $url"; fi
 }
 
 cmd_logs() { tail -n "${1:-60}" "$STATE_DIR/preview.log"; }
 
 cmd_share() {
   local ts url
-  ts="$(find_tailscale)" || die "Tailscale fehlt. Installiere es von https://tailscale.com/download und melde dich an."
-  "$ts" status >/dev/null 2>&1 || die "Tailscale ist nicht verbunden. Öffne die Tailscale-App und melde dich an."
+  ts="$(find_tailscale)" || die "Tailscale is missing. Install it from https://tailscale.com/download and sign in."
+  "$ts" status >/dev/null 2>&1 || die "Tailscale is not connected. Open the Tailscale app and sign in."
   "$ts" serve --bg --https="$PREVIEW_PORT" "http://127.0.0.1:$PREVIEW_PORT" >/dev/null ||
-    die "tailscale serve ist fehlgeschlagen. Aktiviere im Tailscale-Adminbereich unter DNS die Optionen MagicDNS und HTTPS-Zertifikate."
-  url="$(tailnet_url)" || die "Die Tailscale-Adresse dieses Rechners ließ sich nicht ermitteln."
-  ok "Im Tailnet erreichbar: $url"
+    die "tailscale serve failed. In the Tailscale admin console under DNS, enable MagicDNS and HTTPS Certificates."
+  url="$(tailnet_url)" || die "Could not determine the Tailscale address of this machine."
+  ok "Reachable in the tailnet: $url"
 }
 
 cmd_unshare() {
   local ts
-  ts="$(find_tailscale)" || die "Tailscale fehlt."
+  ts="$(find_tailscale)" || die "Tailscale is missing."
   "$ts" serve --https="$PREVIEW_PORT" off >/dev/null
-  ok "Tailscale-Freigabe für Port $PREVIEW_PORT beendet"
+  ok "Stopped Tailscale sharing for port $PREVIEW_PORT"
 }
 
 # Manual dev server. Refuses to start a second one next to the service:
 # two dev servers share one dependency cache and corrupt it.
 cmd_dev() {
   if is_live; then
-    info "Die Vorschau läuft bereits: $HEALTH_URL"
-    info "Ein zweiter Dev-Server würde den gemeinsamen Cache beschädigen. Zum Prüfen von Änderungen: npm run check"
+    info "The preview is already running: $HEALTH_URL"
+    info "A second dev server would corrupt the shared cache. To check changes: npm run check"
     return 0
   fi
   cmd_run
@@ -217,5 +217,5 @@ case "${1:-}" in
   share) cmd_share ;;
   unshare) cmd_unshare ;;
   dev) cmd_dev ;;
-  *) die "Aufruf: preview.sh <install|uninstall|check|restart|status|logs|share|unshare|dev>" ;;
+  *) die "Usage: preview.sh <install|uninstall|check|restart|status|logs|share|unshare|dev>" ;;
 esac

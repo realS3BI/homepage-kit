@@ -12,7 +12,7 @@ Your clients are not technical. Write to them in their language, in one to three
 
 ## Sourced or TODO
 
-Every statement on the website is **sourced**. It comes from `BRIEF.md`, from a message by the clients or from their material in `beispiele/eigenes-material/`. This applies to opening hours, prices, qualifications, insurance contracts, people, customer testimonials and all legal texts.
+Every statement on the website is **sourced**. It comes from `BRIEF.md`, from a message by the clients or from their material in `examples/own-material/`. This applies to opening hours, prices, qualifications, insurance contracts, people, customer testimonials and all legal texts.
 
 Anything still missing goes in as a placeholder that starts with `TODO:` and says what is missing. Then ask for it. The publish command aborts as long as a `TODO` is in the content or `demo: true` is set.
 
@@ -29,13 +29,13 @@ There are two kinds:
 
 For every example that arrives:
 
-1. Store it. Screenshots of references go to `beispiele/vorbilder/`, links to `beispiele/vorbilder/links.md`, own material to `beispiele/eigenes-material/`. Give every file a name that says what it shows.
+1. Store it. Screenshots of references go to `examples/references/`, links to `examples/references/links.md`, own material to `examples/own-material/`. Give every file a name that says what it shows.
 2. Look at it. Open screenshots as images and visit links.
 3. Record in `BRIEF.md` under "Design" what you take from it: layout, colors, typography, tone and what the clients like about it. If they don't know themselves what they like, describe two things you notice and ask whether that's it.
 4. Make a commit.
 5. Confirm in one sentence what arrived and what you take from it.
 
-An example is done when it is in the repo and `BRIEF.md` says what follows from it. If someone puts files into the `beispiele/` folder themselves, the same steps apply from step 2 on.
+An example is done when it is in the repo and `BRIEF.md` says what follows from it. If someone puts files into the `examples/` folder themselves, the same steps apply from step 2 on.
 
 ## Workflow for every change
 
@@ -43,7 +43,7 @@ An example is done when it is in the repo and `BRIEF.md` says what follows from 
 2. Make the change in every language listed in `src/content/index.ts`.
 3. Run `npm run check`. The step is done when the check reports 0 errors and the build succeeds.
 4. Run `npm run preview:check`. The step is done when the preview is reported healthy.
-5. Make a Git commit. The message describes in one German sentence what changes for visitors.
+5. Make a Git commit. The message describes in one sentence what changes for visitors.
 6. Reply with the change and the preview address. `npm run status` shows the Tailscale address.
 
 If step 3 or 4 fails, name the cause and fix it before you reply.
@@ -55,11 +55,11 @@ Every change is its own commit. If someone asks to undo something, use `git reve
 | What | Location |
 | --- | --- |
 | Business facts, the same in every language: name, phone, address, opening hours | `src/content/business.ts` |
-| Texts per language | `src/content/de.ts`, `src/content/en.ts` |
-| Adding or removing languages | `src/content/index.ts` |
+| Texts per language, one file per language code | `src/content/<code>.ts`, for example `de.ts`, `en.ts` |
+| Languages of the website and the default language | `src/content/index.ts` |
 | Colors, fonts, spacing, radii | `src/styles/tokens.css` |
 | Images for the website | `src/assets/`, imported in the content, Astro resizes them at build time |
-| Client material | `beispiele/` |
+| Client material | `examples/` |
 | Settings: short name, skill name, port, domain, server | `kit.env` |
 
 New content fields first get a type in `src/content/types.ts`. Components contain no hard-coded text.
@@ -70,9 +70,16 @@ The preview is a single dev server that macOS runs as a service. File changes sh
 
 If the preview doesn't respond, run `npm run preview:check`. If it stays down, `npm run preview:logs` shows why.
 
-## Language
+## Languages
 
-German texts are idiomatic and follow standard spelling, with `ä`, `ö`, `ü` and `ß`. Technical identifiers, addresses and file names stay without umlauts. Visitors are addressed formally ("Sie") unless `BRIEF.md` specifies "Du". English terms appear in German texts only when they are technical terms or proper names.
+Talk to the clients in the language they write in. The website can be in any language and in as many as the clients want. `BRIEF.md` records the default language and any further languages.
+
+- The default language lives at `/`, every other language under `/<code>/`. `defaultLocale` in `src/content/index.ts` sets it.
+- To add a language, copy the file of the default language to `src/content/<code>.ts`, translate every text and add it to `locales` in `src/content/index.ts`. The code is a language code like `fr` or `de-AT`. Slugs of the legal pages are translated too.
+- To remove a language, delete its file and its line in `src/content/index.ts`.
+- A website with one language shows no language switch.
+
+Texts in every language are idiomatic, follow that language's spelling and use its special characters. Technical identifiers, addresses and file names stay in plain ASCII. The form of address (formal or informal, for example "Sie" or "Du" in German) comes from `BRIEF.md`; without an entry, use the formal one. Foreign words appear only when they are technical terms or proper names.
 
 ## Design and accessibility
 

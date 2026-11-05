@@ -4,5 +4,5 @@ dist
 .astro
 .kit
 kit.local.env
-beispiele
+examples
 .DS_Store

@@ -17,7 +17,7 @@ Telegram ──> OpenClaw ──> this repo on the Mac
 - **Preview.** macOS starts a dev server at boot and restarts it after every crash. Tailscale makes it reachable at an HTTPS address that only your own devices can open.
 - **Watchdog.** OpenClaw checks the preview every five minutes and restarts it if needed.
 - **Skill.** OpenClaw gets a skill for this website. You choose its name and the keywords that trigger it.
-- **Website.** Static pages built with Astro, in German and English, with imprint (Impressum) and privacy policy. No cookies, no third-party services.
+- **Website.** Static pages built with Astro, in one language or several, with imprint and privacy policy. The template ships with German and English sample content; in onboarding you choose the default language and any translations. No cookies, no third-party services.
 
 ## Requirements
 
@@ -54,7 +54,7 @@ The setup asks four questions and writes the answers to `kit.env`:
 | --- | --- |
 | Short name of the website | Used in the names of the macOS services and the watchdog, for example `homepage` |
 | Skill name | What you call the agent with in chat. `website` becomes `/website` |
-| Keywords | Words that trigger the skill even without the slash command, for example "Firmenwebsite, unsere Homepage" |
+| Keywords | Words that trigger the skill even without the slash command, for example "company website, our homepage" |
 | Preview port | Every website on the same Mac needs its own |
 
 It then installs the dependencies, sets up the preview service, shares it via Tailscale and installs the skill and watchdog in OpenClaw. At the end it shows the preview address.
@@ -63,15 +63,15 @@ You can run the setup again at any time, including to change the skill name, key
 
 You can also leave this to OpenClaw. An agent passes the answers as options:
 
-> Clone https://github.com/realS3BI/homepage-kit into ~/Developer and run `npm run setup -- --slug homepage --skill website --triggers "Firmenwebsite, unsere Homepage"` in the repo. Then send me the preview address.
+> Clone https://github.com/realS3BI/homepage-kit into ~/Developer and run `npm run setup -- --slug homepage --skill website --triggers "company website, our homepage"` in the repo. Then send me the preview address.
 
 ## Getting started
 
 Message your OpenClaw, here with the skill name `website`:
 
-> /website Leg los
+> /website Let's get started
 
-The agent first asks for examples and material, then asks questions about the business, only a few at a time. It records the answers in `BRIEF.md`. Then it builds the first draft and sends you the preview address.
+The agent first asks for examples and material, then asks questions about the business, only a few at a time. Write in whatever language you like; the agent answers in the same language. It records the answers in `BRIEF.md`. Then it builds the first draft and sends you the preview address.
 
 ### Examples and material
 
@@ -80,19 +80,19 @@ Show the agent how the website should look. Send it in the chat:
 - Links and screenshots of websites you like
 - Logo, photos and existing texts
 
-The agent stores everything in the `beispiele/` folder, looks at it and notes in `BRIEF.md` what it takes from it for layout, colors, typography and tone. From other people's websites it takes the direction; it doesn't copy them. Your own material it uses directly.
+The agent stores everything in the `examples/` folder, looks at it and notes in `BRIEF.md` what it takes from it for layout, colors, typography and tone. From other people's websites it takes the direction; it doesn't copy them. Your own material it uses directly.
 
 This works at any time, not just at the start. A screenshot with "this is how the header should look" is enough.
 
 ### Day to day
 
-> /website Am Freitag haben wir ab jetzt bis 14 Uhr offen
+> /website From now on we're open until 2 pm on Fridays
 >
-> /website Wir haben von 3. bis 14. August Betriebsurlaub
+> /website We're closed for holidays from 3 to 14 August
 >
-> /website Hier ist unser neues Teamfoto
+> /website Here is our new team photo
 >
-> /website Mach die letzte Änderung rückgängig
+> /website Undo the last change
 
 Every change becomes its own Git commit, so each one can be undone on its own.
 
@@ -124,7 +124,7 @@ You need a server running Ubuntu or Debian that you can log into with an SSH key
    npm run deploy
    ```
 
-The command builds the website on the Mac, copies the files to the server and starts Caddy there. Caddy obtains and renews the HTTPS certificate itself. Later, `/website Veröffentlichen` in the chat is enough.
+The command builds the website on the Mac, copies the files to the server and starts Caddy there. Caddy obtains and renews the HTTPS certificate itself. Later, `/website Publish` in the chat is enough.
 
 ### With Coolify or another platform
 
@@ -170,7 +170,7 @@ Create a separate repo from the template for each website and give each one its 
 | --- | --- |
 | `AGENTS.md` | Rules and workflow for every AI agent |
 | `BRIEF.md` | What is known about the business, maintained by the agent |
-| `beispiele/` | References and own material |
+| `examples/` | References and own material |
 | `docs/onboarding.md` | How the first conversation goes |
 | `kit.env` | Settings: short name, skill name, keywords, port, domain, server |
 | `src/content/` | All texts and facts of the website |

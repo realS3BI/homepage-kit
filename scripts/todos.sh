@@ -13,20 +13,20 @@ cd "$ROOT_DIR"
 open=0
 
 if grep -Eq '^[[:space:]]*demo:[[:space:]]*true' src/content/business.ts; then
-  warn "Beispielinhalt aktiv: In src/content/business.ts steht noch demo: true."
+  warn "Sample content active: src/content/business.ts still has demo: true."
   open=1
 fi
 
 todos="$(grep -rn 'TODO' src/content || true)"
 if [ -n "$todos" ]; then
   count="$(printf '%s\n' "$todos" | wc -l | tr -d ' ')"
-  warn "$count offene TODO-Stellen im Inhalt:"
+  warn "$count open TODO markers in the content:"
   printf '%s\n' "$todos" | cut -c1-160 >&2
   open=1
 fi
 
 if [ "$open" -eq 0 ]; then
-  ok "Keine offenen TODO-Stellen, kein Beispielinhalt"
+  ok "No open TODO markers, no sample content"
   exit 0
 fi
 

@@ -7,32 +7,32 @@ source "$(dirname "${BASH_SOURCE[0]}")/lib.sh"
 SCRIPTS="$ROOT_DIR/scripts"
 
 info "Website: $SITE_SLUG · Skill: /$SKILL_NAME"
-info "Ordner:  $ROOT_DIR"
-in_synced_folder && warn "Das Repo liegt in einem iCloud-synchronisierten Ordner. Verschiebe es nach ~/Developer."
+info "Folder:  $ROOT_DIR"
+in_synced_folder && warn "The repo is in a folder synced by iCloud. Move it to ~/Developer."
 
 info ""
-info "Vorschau"
+info "Preview"
 bash "$SCRIPTS/preview.sh" status
-if [ -n "$LAN_PORT" ]; then info "  WLAN-Port: $LAN_PORT"; fi
+if [ -n "$LAN_PORT" ]; then info "  Wi-Fi port: $LAN_PORT"; fi
 
 info ""
 info "OpenClaw"
 bash "$SCRIPTS/openclaw.sh" status
 
 info ""
-info "Inhalt"
+info "Content"
 if grep -q '^Status: open' "$ROOT_DIR/BRIEF.md" 2>/dev/null; then
-  warn "Das Onboarding ist noch offen (BRIEF.md)."
+  warn "Onboarding has not started yet (BRIEF.md)."
 else
-  ok "Onboarding begonnen oder abgeschlossen (BRIEF.md)"
+  ok "Onboarding in progress or done (BRIEF.md)"
 fi
 bash "$SCRIPTS/todos.sh"
 
 info ""
-info "Veröffentlichung"
+info "Publishing"
 if [ -n "$SITE_DOMAIN" ] && [ -n "$DEPLOY_HOST" ]; then
-  ok "Ziel: https://$SITE_DOMAIN auf $DEPLOY_HOST:$DEPLOY_PATH"
+  ok "Target: https://$SITE_DOMAIN on $DEPLOY_HOST:$DEPLOY_PATH"
 else
-  warn "SITE_DOMAIN und DEPLOY_HOST in kit.env sind noch leer."
+  warn "SITE_DOMAIN and DEPLOY_HOST in kit.env are still empty."
 fi
 exit 0

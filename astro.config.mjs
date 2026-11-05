@@ -41,7 +41,7 @@ export default defineConfig({
         usePolling: true,
         interval: 500,
         binaryInterval: 1500,
-        ignored: ['**/beispiele/**', '**/.kit/**', '**/dist/**'],
+        ignored: ['**/examples/**', '**/.kit/**', '**/dist/**'],
       },
     },
   },

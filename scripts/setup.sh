@@ -22,7 +22,7 @@ NEW_TRIGGERS=""
 NEW_PORT=""
 SET_TRIGGERS=0
 
-usage="Aufruf: setup.sh [--slug <name>] [--skill <name>] [--triggers \"<stichworte>\"] [--port <n>] [--yes] [--no-tailscale] [--no-openclaw] [--uninstall]"
+usage="Usage: setup.sh [--slug <name>] [--skill <name>] [--triggers \"<words>\"] [--port <n>] [--yes] [--no-tailscale] [--no-openclaw] [--uninstall]"
 
 while [ $# -gt 0 ]; do
   case "$1" in
@@ -35,7 +35,7 @@ while [ $# -gt 0 ]; do
     --no-openclaw) USE_OPENCLAW=0 ;;
     --uninstall) UNINSTALL=1 ;;
     *)
-      printf '✗ Unbekannte Option: %s\n%s\n' "$1" "$usage" >&2
+      printf '✗ Unknown option: %s\n%s\n' "$1" "$usage" >&2
       exit 1
       ;;
   esac
@@ -83,32 +83,32 @@ remove_installation() {
 if [ "$UNINSTALL" -eq 1 ]; then
   remove_installation
   rm -f "$INSTALLED_FILE"
-  printf 'Das Repo selbst bleibt unverändert.\n'
+  printf 'The repo itself stays unchanged.\n'
   exit 0
 fi
 
 [ "$(uname -s)" = "Darwin" ] || {
-  printf '✗ Das Setup richtet macOS-Dienste ein. Auf anderen Systemen: npm install && npm run dev\n' >&2
+  printf '✗ The setup installs macOS services. On other systems: npm install && npm run dev\n' >&2
   exit 1
 }
 command -v node >/dev/null 2>&1 || {
-  printf '✗ Node.js fehlt. Installiere es mit: brew install node\n' >&2
+  printf '✗ Node.js is missing. Install it with: brew install node\n' >&2
   exit 1
 }
 node -e 'const [a,b]=process.versions.node.split(".").map(Number);process.exit(a>22||(a===22&&b>=23)?0:1)' || {
-  printf '✗ Node.js %s ist zu alt. Benötigt wird Version 22.23 oder neuer: brew upgrade node\n' "$(node -v)" >&2
+  printf '✗ Node.js %s is too old. Version 22.23 or newer is required: brew upgrade node\n' "$(node -v)" >&2
   exit 1
 }
 
 # Ask for the names in a terminal. Agents and scripts pass flags or --yes instead.
 if [ "$ASK" -eq 1 ] && [ -t 0 ]; then
-  printf 'Vier kurze Fragen. Enter übernimmt den Wert in eckigen Klammern.\n\n'
-  NEW_SLUG="$(ask 'Kurzname der Website (Kleinbuchstaben, Ziffern, Bindestrich)' "$(current SITE_SLUG)")"
+  printf 'Four short questions. Press Enter to keep the value in square brackets.\n\n'
+  NEW_SLUG="$(ask 'Short name of the website (lowercase letters, digits, hyphens)' "$(current SITE_SLUG)")"
   skill_default="$(current SKILL_NAME)"
-  NEW_SKILL="$(ask 'Name des OpenClaw-Skills, du rufst ihn im Chat mit /name auf' "${skill_default:-$NEW_SLUG}")"
-  NEW_TRIGGERS="$(ask 'Stichworte, bei denen der Skill auch ohne /name anspringt (optional)' "$(current SKILL_TRIGGERS)")"
+  NEW_SKILL="$(ask 'Name of the OpenClaw skill, you call it in the chat with /name' "${skill_default:-$NEW_SLUG}")"
+  NEW_TRIGGERS="$(ask 'Keywords that also trigger the skill without /name (optional)' "$(current SKILL_TRIGGERS)")"
   SET_TRIGGERS=1
-  NEW_PORT="$(ask 'Port der Vorschau' "$(current PREVIEW_PORT)")"
+  NEW_PORT="$(ask 'Preview port' "$(current PREVIEW_PORT)")"
   printf '\n'
 fi
 
@@ -124,7 +124,7 @@ installed_now="$SITE_SLUG|$SKILL_NAME|$PREVIEW_PORT"
 if [ -f "$INSTALLED_FILE" ]; then
   installed_before="$(cat "$INSTALLED_FILE")"
   if [ "$installed_before" != "$installed_now" ]; then
-    info "Einstellungen geändert, alte Einrichtung wird entfernt ($installed_before)"
+    info "Settings changed, removing the old installation ($installed_before)"
     IFS='|' read -r old_slug old_skill old_port <<<"$installed_before"
     (
       export KIT_FORCE_SLUG="$old_slug" KIT_FORCE_SKILL="$old_skill" KIT_FORCE_PORT="$old_port"
@@ -134,36 +134,36 @@ if [ -f "$INSTALLED_FILE" ]; then
 fi
 
 cd "$ROOT_DIR"
-info "Website: $SITE_SLUG · Skill: /$SKILL_NAME · Port: $PREVIEW_PORT · Ordner: $ROOT_DIR"
+info "Website: $SITE_SLUG · Skill: /$SKILL_NAME · Port: $PREVIEW_PORT · Folder: $ROOT_DIR"
 
-info "1/4 Abhängigkeiten installieren"
+info "1/4 Installing dependencies"
 if [ -f package-lock.json ]; then
   npm ci --no-audit --no-fund --loglevel=error >/dev/null
 else
   npm install --no-audit --no-fund --loglevel=error >/dev/null
 fi
-ok "Abhängigkeiten installiert"
+ok "Dependencies installed"
 
-info "2/4 Vorschau-Dienst einrichten"
+info "2/4 Setting up the preview service"
 bash "$SCRIPTS/preview.sh" install
 mkdir -p "$STATE_DIR"
 printf '%s' "$installed_now" >"$INSTALLED_FILE"
 
-info "3/4 Tailscale-Freigabe"
+info "3/4 Tailscale sharing"
 if [ "$USE_TAILSCALE" -eq 1 ]; then
-  bash "$SCRIPTS/preview.sh" share || warn "Ohne Tailscale ist die Vorschau nur auf diesem Rechner erreichbar. Später nachholen: npm run share"
+  bash "$SCRIPTS/preview.sh" share || warn "Without Tailscale the preview is only reachable on this machine. To add it later: npm run share"
 else
-  info "  übersprungen"
+  info "  skipped"
 fi
 
-info "4/4 OpenClaw-Skill und Wächter"
+info "4/4 OpenClaw skill and watchdog"
 if [ "$USE_OPENCLAW" -eq 1 ]; then
   bash "$SCRIPTS/openclaw.sh" install
 else
-  info "  übersprungen"
+  info "  skipped"
 fi
 
 info ""
-info "Fertig. Nächster Schritt: Schreibe deinem OpenClaw »/$SKILL_NAME Leg los«."
-info "Der Agent bittet dann um Beispiele und Material und stellt Fragen zum Betrieb."
-info "Status jederzeit prüfen: npm run status"
+info "Done. Next step: send your OpenClaw \"/$SKILL_NAME let's get started\"."
+info "The agent then asks for examples and material and asks questions about the business."
+info "Check the status at any time: npm run status"

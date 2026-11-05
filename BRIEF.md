@@ -28,8 +28,10 @@ The agent fills in this file during onboarding (`docs/onboarding.md`) and keeps 
 
 ## Language and tone
 
-- Form of address (Sie or Du):
-- Website languages:
+- Language of the conversation with the clients:
+- Default language of the website:
+- Further languages (or: only the default language):
+- Form of address (formal or informal):
 
 ## Design
 

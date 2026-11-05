@@ -10,15 +10,15 @@ set -euo pipefail
 source "$(dirname "${BASH_SOURCE[0]}")/lib.sh"
 
 require_config() {
-  [ -n "$SITE_DOMAIN" ] || die "SITE_DOMAIN in kit.env ist leer. Beispiel: SITE_DOMAIN=musterbetrieb.at"
-  [ -n "$DEPLOY_HOST" ] || die "DEPLOY_HOST in kit.env ist leer. Beispiel: DEPLOY_HOST=root@203.0.113.10"
+  [ -n "$SITE_DOMAIN" ] || die "SITE_DOMAIN in kit.env is empty. Example: SITE_DOMAIN=musterbetrieb.at"
+  [ -n "$DEPLOY_HOST" ] || die "DEPLOY_HOST in kit.env is empty. Example: DEPLOY_HOST=root@203.0.113.10"
 }
 
 remote() { ssh -o BatchMode=yes -o ConnectTimeout=15 "$DEPLOY_HOST" "$@"; }
 
 cmd_setup() {
   require_config
-  info "Server vorbereiten: $DEPLOY_HOST"
+  info "Preparing server: $DEPLOY_HOST"
   remote "DEPLOY_PATH='$DEPLOY_PATH' bash -s" <<'REMOTE'
 set -euo pipefail
 SUDO=""
@@ -34,10 +34,10 @@ if command -v ufw >/dev/null 2>&1 && $SUDO ufw status | grep -q "Status: active"
   $SUDO ufw allow 80/tcp >/dev/null
   $SUDO ufw allow 443 >/dev/null
 fi
-echo "Docker $(docker --version | cut -d' ' -f3 | tr -d ,) bereit, Ordner $DEPLOY_PATH angelegt"
+echo "Docker $(docker --version | cut -d' ' -f3 | tr -d ,) ready, folder $DEPLOY_PATH created"
 REMOTE
-  ok "Server ist vorbereitet. Veröffentlichen mit: npm run deploy"
-  info "Der DNS-Eintrag (A-Record) von $SITE_DOMAIN muss auf die IP des Servers zeigen, sonst erhält Caddy kein Zertifikat."
+  ok "Server is ready. Publish with: npm run deploy"
+  info "The DNS record (A record) of $SITE_DOMAIN must point to the server's IP, otherwise Caddy cannot get a certificate."
 }
 
 write_caddyfile() {
@@ -56,12 +56,12 @@ cmd_push() {
 
   cd "$ROOT_DIR"
   if [ "$allow_todos" -eq 0 ] && ! bash scripts/todos.sh --strict; then
-    die "Veröffentlichung abgebrochen: Der Inhalt enthält noch Platzhalter. Erst ersetzen, oder bewusst mit --allow-todos veröffentlichen."
+    die "Publishing stopped: the content still contains placeholders. Replace them first, or publish them on purpose with --allow-todos."
   fi
 
-  info "Website bauen für https://$SITE_DOMAIN"
+  info "Building the website for https://$SITE_DOMAIN"
   npm run --silent build
-  [ -f dist/index.html ] || die "Der Build hat keine dist/index.html erzeugt."
+  [ -f dist/index.html ] || die "The build did not produce dist/index.html."
 
   # Global on purpose: the EXIT trap runs after this function has returned.
   stage="$(mktemp -d)"
@@ -71,9 +71,9 @@ cmd_push() {
   cp "$ROOT_DIR/deploy/compose.yaml" "$stage/compose.yaml"
   printf 'DOMAIN=%s\n' "$SITE_DOMAIN" >"$stage/.env"
 
-  info "Dateien übertragen nach $DEPLOY_HOST:$DEPLOY_PATH"
+  info "Copying files to $DEPLOY_HOST:$DEPLOY_PATH"
   remote "mkdir -p '$DEPLOY_PATH/site' '$DEPLOY_PATH/caddy'" ||
-    die "Der Server ist nicht erreichbar oder nicht vorbereitet. Einmalig ausführen: npm run deploy:setup"
+    die "The server cannot be reached or is not prepared. Run this once: npm run deploy:setup"
   rsync -az --delete dist/ "$DEPLOY_HOST:$DEPLOY_PATH/site/"
   rsync -az "$stage/caddy/" "$DEPLOY_HOST:$DEPLOY_PATH/caddy/"
   rsync -az "$stage/compose.yaml" "$stage/.env" "$DEPLOY_HOST:$DEPLOY_PATH/"
@@ -81,10 +81,10 @@ cmd_push() {
   remote "cd '$DEPLOY_PATH' && docker compose up -d --quiet-pull && { docker compose exec -T caddy caddy reload --config /etc/caddy/Caddyfile >/dev/null 2>&1 || true; }"
 
   if curl -fsS -o /dev/null --max-time 20 "https://$SITE_DOMAIN/"; then
-    ok "Veröffentlicht: https://$SITE_DOMAIN/"
+    ok "Published: https://$SITE_DOMAIN/"
   else
-    warn "Die Dateien sind übertragen, aber https://$SITE_DOMAIN/ antwortet noch nicht."
-    warn "Prüfe den DNS-Eintrag und das Server-Log: ssh $DEPLOY_HOST 'cd $DEPLOY_PATH && docker compose logs --tail 40 caddy'"
+    warn "The files were copied, but https://$SITE_DOMAIN/ does not respond yet."
+    warn "Check the DNS record and the server log: ssh $DEPLOY_HOST 'cd $DEPLOY_PATH && docker compose logs --tail 40 caddy'"
     exit 1
   fi
 }
@@ -92,5 +92,5 @@ cmd_push() {
 case "${1:-}" in
   setup) cmd_setup ;;
   push) cmd_push "${2:-}" ;;
-  *) die "Aufruf: deploy.sh <setup|push [--allow-todos]>" ;;
+  *) die "Usage: deploy.sh <setup|push [--allow-todos]>" ;;
 esac
