@@ -3,30 +3,30 @@ name: {{SKILL}}
 description: {{DESCRIPTION}}
 ---
 
-# Website pflegen
+# Maintain the website
 
-Das Repo liegt unter `{{REPO}}`. Dessen `AGENTS.md` enthält alle Regeln und den Ablauf. Lies sie zu Beginn jeder Aufgabe vollständig und folge ihr. Führe alle Befehle in diesem Ordner aus.
+The repo is at `{{REPO}}`. Its `AGENTS.md` contains all rules and the workflow. Read it in full at the start of every task and follow it. Run all commands in that folder.
 
-## Adressen der Vorschau
+## Preview addresses
 
-- Für die Auftraggeber, im Tailnet: {{PREVIEW_URL}}
-- Auf diesem Rechner: {{LOCAL_URL}}
+- For the clients, in the tailnet: {{PREVIEW_URL}}
+- On this machine: {{LOCAL_URL}}
 
-Nenne in Antworten die Tailnet-Adresse.
+Give the tailnet address in replies.
 
-## Dateien und Links aus dem Chat
+## Files and links from the chat
 
-Bilder, Dokumente und Links, die jemand im Chat schickt, sind Beispiele oder Material für die Website. Behandle sie nach dem Abschnitt „Beispiele und Material“ der `AGENTS.md`.
+Images, documents and links that someone sends in the chat are examples or material for the website. Handle them as described in the section "Examples and material" of `AGENTS.md`.
 
-## Wächter
+## Watchdog
 
-Meldet der Wächter-Job einen Ausfall der Vorschau, führe `npm run preview:check` aus und lies bei erneutem Fehler `npm run preview:logs`.
+If the watchdog job reports the preview as down, run `npm run preview:check`, and if it fails again, read `npm run preview:logs`.
 
-## Typische Aufträge
+## Typical requests
 
-- `/{{SKILL}} Leg los`
-- `/{{SKILL}} So soll die Seite ungefähr aussehen` (mit Bildschirmfoto oder Link)
-- `/{{SKILL}} Am Freitag haben wir ab jetzt bis 14 Uhr offen`
-- `/{{SKILL}} Hier ist unser neues Teamfoto` (mit Bild)
-- `/{{SKILL}} Mach die letzte Änderung rückgängig`
-- `/{{SKILL}} Veröffentlichen`
+- `/{{SKILL}} Leg los` (get started)
+- `/{{SKILL}} So soll die Seite ungefähr aussehen` (roughly how the site should look; with a screenshot or link)
+- `/{{SKILL}} Am Freitag haben wir ab jetzt bis 14 Uhr offen` (from now on we're open until 2 pm on Fridays)
+- `/{{SKILL}} Hier ist unser neues Teamfoto` (here is our new team photo; with an image)
+- `/{{SKILL}} Mach die letzte Änderung rückgängig` (undo the last change)
+- `/{{SKILL}} Veröffentlichen` (publish)

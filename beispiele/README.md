@@ -1,13 +1,13 @@
-# Beispiele und Material
+# Examples and material
 
-Hier sammelt der Agent alles, was zeigt, wie die Website werden soll. Schicken Sie Beispiele einfach im Chat, der Agent legt sie in diese Ordner, sieht sie sich an und notiert in `BRIEF.md`, was er daraus mitnimmt. Sie können Dateien auch selbst im Finder hierher ziehen. Sagen Sie dem Agenten dann kurz Bescheid.
+This is where the agent collects everything that shows how the website should turn out. Just send examples in the chat. The agent puts them in these folders, looks at them and notes in `BRIEF.md` what it takes from them. You can also drag files here yourself in Finder. Then give the agent a quick heads-up.
 
-## `vorbilder/`
+## `vorbilder/` (references)
 
-Websites, die Ihnen gefallen, als Link oder Bildschirmfoto. Der Agent übernimmt davon die Richtung, also Aufbau, Farbstimmung und Tonfall. Texte und Bilder fremder Websites kopiert er nicht.
+Websites you like, as a link or screenshot. The agent takes the direction from them: layout, color mood and tone. It does not copy text or images from other people's websites.
 
-## `eigenes-material/`
+## `eigenes-material/` (own material)
 
-Dinge, die Ihnen gehören und die auf der Website erscheinen dürfen: Logo, Fotos von Räumen, Team und Arbeit, vorhandene Texte.
+Things that belong to you and may appear on the website: logo, photos of the premises, team and work, existing texts.
 
-Schicken Sie nur Bilder, an denen Sie die Rechte haben und auf denen alle abgebildeten Personen einverstanden sind.
+Only send images you hold the rights to and where everyone pictured has agreed.

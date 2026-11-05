@@ -1,103 +1,103 @@
 # AGENTS.md
 
-Dieses Repo ist die Website eines kleinen Betriebs. Ein KI-Agent pflegt sie im Auftrag der Inhaberin oder des Inhabers, meist per Chat. Auf dem Rechner läuft eine Live-Vorschau, veröffentlicht wird auf einen eigenen Server.
+This repo is the website of a small business. An AI agent maintains it on behalf of the owner, usually through chat. A live preview runs on the local machine, and the site is published to the owner's own server.
 
-## Zuerst den Stand prüfen
+## Check the state first
 
-Lies `BRIEF.md`. Steht dort `Status: offen`, führe das Onboarding nach `docs/onboarding.md` durch, bevor du Inhalte änderst. Bei jedem anderen Status ist `BRIEF.md` deine Quelle für alles, was über den Betrieb und die gewünschte Gestaltung bekannt ist.
+Read `BRIEF.md`. If it says `Status: open`, run the onboarding in `docs/onboarding.md` before you change any content. With any other status, `BRIEF.md` is your source for everything known about the business and the desired design.
 
-## Mit wem du sprichst
+## Who you are talking to
 
-Deine Auftraggeber sind keine Techniker. Schreibe ihnen in ihrer Sprache, was sich auf der Website geändert hat, in ein bis drei Sätzen, und nenne die Adresse der Vorschau. Dateinamen und Befehle nennst du auf Nachfrage. Stelle höchstens drei Fragen pro Nachricht.
+Your clients are not technical. Write to them in their language, in one to three sentences, about what changed on the website, and give the preview address. Mention file names and commands only when asked. Ask at most three questions per message.
 
-## Belegt oder TODO
+## Sourced or TODO
 
-Jede Angabe auf der Website ist **belegt**. Sie stammt aus `BRIEF.md`, aus einer Nachricht der Auftraggeber oder aus deren Material in `beispiele/eigenes-material/`. Das gilt für Öffnungszeiten, Preise, Qualifikationen, Kassenverträge, Personen, Kundenstimmen und alle rechtlichen Texte.
+Every statement on the website is **sourced**. It comes from `BRIEF.md`, from a message by the clients or from their material in `beispiele/eigenes-material/`. This applies to opening hours, prices, qualifications, insurance contracts, people, customer testimonials and all legal texts.
 
-Was noch fehlt, trägst du als Platzhalter ein, der mit `TODO:` beginnt und sagt, was fehlt. Frag danach. Der Befehl zum Veröffentlichen bricht ab, solange ein `TODO` im Inhalt steht oder `demo: true` gesetzt ist.
+Anything still missing goes in as a placeholder that starts with `TODO:` and says what is missing. Then ask for it. The publish command aborts as long as a `TODO` is in the content or `demo: true` is set.
 
-Fotos kommen von den Auftraggebern. Bis echte Fotos da sind, bleibt der Bereich ohne Bild.
+Photos come from the clients. Until real photos arrive, the section stays without an image.
 
-## Beispiele und Material
+## Examples and material
 
-Mit Beispielen zeigen dir die Auftraggeber, wie die Website aussehen soll. Sie schicken sie dir im Chat, im Onboarding und jederzeit danach. Du legst alles im Repo ab und hältst fest, was du daraus ableitest, damit auch jeder spätere Agent weiß, wohin die Gestaltung gehen soll.
+Clients use examples to show you how the website should look. They send them in chat, during onboarding and at any time afterwards. You store everything in the repo and record what you take from it, so every later agent knows where the design is headed.
 
-Es gibt zwei Arten:
+There are two kinds:
 
-- **Vorbilder** sind fremde Websites, als Link oder Bildschirmfoto. Sie geben die Richtung vor: Aufbau, Farbstimmung, Schrift, Tonfall. Text, Bilder und Gestaltung dieser Website entstehen neu.
-- **Eigenes Material** gehört den Auftraggebern: Logo, Fotos, vorhandene Texte. Es erscheint direkt auf der Website.
+- **References** are other people's websites, as a link or screenshot. They set the direction: layout, color mood, typography, tone. The text, images and design of this website are created from scratch.
+- **Own material** belongs to the clients: logo, photos, existing texts. It appears directly on the website.
 
-Für jedes Beispiel, das ankommt:
+For every example that arrives:
 
-1. Lege es ab. Bildschirmfotos von Vorbildern nach `beispiele/vorbilder/`, Links nach `beispiele/vorbilder/links.md`, eigenes Material nach `beispiele/eigenes-material/`. Gib jeder Datei einen Namen, der sagt, was sie zeigt.
-2. Sieh es dir an. Öffne Bildschirmfotos als Bild und rufe Links auf.
-3. Halte in `BRIEF.md` unter „Gestaltung“ fest, was du daraus ableitest: Aufbau, Farben, Schrift, Tonfall und was den Auftraggebern daran gefällt. Wissen sie selbst nicht, was ihnen gefällt, beschreibe zwei Dinge, die dir auffallen, und frag, ob es das ist.
-4. Lege einen Commit an.
-5. Bestätige in einem Satz, was angekommen ist und was du daraus mitnimmst.
+1. Store it. Screenshots of references go to `beispiele/vorbilder/`, links to `beispiele/vorbilder/links.md`, own material to `beispiele/eigenes-material/`. Give every file a name that says what it shows.
+2. Look at it. Open screenshots as images and visit links.
+3. Record in `BRIEF.md` under "Design" what you take from it: layout, colors, typography, tone and what the clients like about it. If they don't know themselves what they like, describe two things you notice and ask whether that's it.
+4. Make a commit.
+5. Confirm in one sentence what arrived and what you take from it.
 
-Erledigt ist ein Beispiel, wenn es im Repo liegt und `BRIEF.md` sagt, was daraus folgt. Legt jemand Dateien selbst in den Ordner `beispiele/`, gelten dieselben Schritte ab Schritt 2.
+An example is done when it is in the repo and `BRIEF.md` says what follows from it. If someone puts files into the `beispiele/` folder themselves, the same steps apply from step 2 on.
 
-## Ablauf jeder Änderung
+## Workflow for every change
 
-1. Lies die betroffenen Dateien.
-2. Setze die Änderung um, in jeder Sprache aus `src/content/index.ts`.
-3. Führe `npm run check` aus. Der Schritt ist erledigt, wenn die Prüfung 0 Fehler meldet und der Build durchläuft.
-4. Führe `npm run preview:check` aus. Der Schritt ist erledigt, wenn die Vorschau als gesund gemeldet wird.
-5. Lege einen Git-Commit an. Die Nachricht beschreibt in einem deutschen Satz, was sich für Besucher ändert.
-6. Antworte mit der Änderung und der Vorschau-Adresse. `npm run status` zeigt die Tailscale-Adresse.
+1. Read the affected files.
+2. Make the change in every language listed in `src/content/index.ts`.
+3. Run `npm run check`. The step is done when the check reports 0 errors and the build succeeds.
+4. Run `npm run preview:check`. The step is done when the preview is reported healthy.
+5. Make a Git commit. The message describes in one German sentence what changes for visitors.
+6. Reply with the change and the preview address. `npm run status` shows the Tailscale address.
 
-Scheitert Schritt 3 oder 4, nenne die Ursache und behebe sie, bevor du antwortest.
+If step 3 or 4 fails, name the cause and fix it before you reply.
 
-Jede Änderung ist ein eigener Commit. Bittet jemand darum, etwas rückgängig zu machen, nimm `git revert` für den betreffenden Commit und durchlaufe die Schritte 3 bis 6.
+Every change is its own commit. If someone asks to undo something, use `git revert` on the commit in question and run steps 3 to 6.
 
-## Wo was liegt
+## Where things live
 
-| Was | Ort |
+| What | Location |
 | --- | --- |
-| Fakten zum Betrieb, gleich in allen Sprachen: Name, Telefon, Adresse, Öffnungszeiten | `src/content/business.ts` |
-| Texte je Sprache | `src/content/de.ts`, `src/content/en.ts` |
-| Sprachen hinzufügen oder entfernen | `src/content/index.ts` |
-| Farben, Schriften, Abstände, Radien | `src/styles/tokens.css` |
-| Bilder für die Website | `src/assets/`, im Inhalt importieren, Astro verkleinert sie beim Build |
-| Material der Auftraggeber | `beispiele/` |
-| Einstellungen: Kurzname, Skill-Name, Port, Domain, Server | `kit.env` |
+| Business facts, the same in every language: name, phone, address, opening hours | `src/content/business.ts` |
+| Texts per language | `src/content/de.ts`, `src/content/en.ts` |
+| Adding or removing languages | `src/content/index.ts` |
+| Colors, fonts, spacing, radii | `src/styles/tokens.css` |
+| Images for the website | `src/assets/`, imported in the content, Astro resizes them at build time |
+| Client material | `beispiele/` |
+| Settings: short name, skill name, port, domain, server | `kit.env` |
 
-Neue Inhaltsfelder bekommen zuerst einen Typ in `src/content/types.ts`. Komponenten enthalten keine festen Texte.
+New content fields first get a type in `src/content/types.ts`. Components contain no hard-coded text.
 
-## Vorschau
+## Preview
 
-Die Vorschau ist ein einziger Dev-Server, den macOS als Dienst betreibt. Änderungen an Dateien erscheinen dort sofort. Zum Prüfen dient `npm run check`, das die Website baut, ohne einen Server zu starten. Ein zweiter Dev-Server neben dem Dienst teilt sich dessen Cache und legt die Vorschau lahm.
+The preview is a single dev server that macOS runs as a service. File changes show up there immediately. For checking, use `npm run check`, which builds the website without starting a server. A second dev server next to the service shares its cache and breaks the preview.
 
-Antwortet die Vorschau nicht, hilft `npm run preview:check`. Bleibt sie aus, zeigt `npm run preview:logs` den Grund.
+If the preview doesn't respond, run `npm run preview:check`. If it stays down, `npm run preview:logs` shows why.
 
-## Sprache
+## Language
 
-Deutsche Texte sind idiomatisch und folgen der Rechtschreibung, mit `ä`, `ö`, `ü` und `ß`. Technische Bezeichner, Adressen und Dateinamen bleiben ohne Umlaute. Besucher werden gesiezt, außer `BRIEF.md` legt das Du fest. Englische Begriffe stehen in deutschen Texten nur, wenn sie Fachbegriffe oder Eigennamen sind.
+German texts are idiomatic and follow standard spelling, with `ä`, `ö`, `ü` and `ß`. Technical identifiers, addresses and file names stay without umlauts. Visitors are addressed formally ("Sie") unless `BRIEF.md` specifies "Du". English terms appear in German texts only when they are technical terms or proper names.
 
-## Gestaltung und Zugänglichkeit
+## Design and accessibility
 
-- Farben, Schriften und Abstände kommen aus `src/styles/tokens.css`. Komponenten enthalten keine Farbwerte.
-- Maßstab ist WCAG 2.2 AA: Textkontrast mindestens 4,5:1, alles per Tastatur bedienbar, sichtbarer Fokus, Alternativtext für jedes informative Bild, Bewegung nur bei `prefers-reduced-motion: no-preference`.
-- Jeder Abschnitt hat höchstens zwei Schaltflächen. Die wichtigste Handlung der Seite ist die Kontaktaufnahme.
-- Öffnungszeiten und Telefonnummer stehen im ersten Bildschirm.
+- Colors, fonts and spacing come from `src/styles/tokens.css`. Components contain no color values.
+- The standard is WCAG 2.2 AA: text contrast at least 4.5:1, everything operable by keyboard, visible focus, alt text for every informative image, motion only under `prefers-reduced-motion: no-preference`.
+- Every section has at most two buttons. The most important action on the page is getting in touch.
+- Opening hours and phone number are visible on the first screen.
 
-## Datenschutz
+## Privacy
 
-Die Website lädt alles vom eigenen Server: Schriften als npm-Paket, Bilder aus `src/assets/`, die Karte als Link. Sie setzt keine Cookies. Ein Formular hat sie nicht, weil dafür ein Dienst nötig wäre, der die Eingaben verarbeitet.
+The website loads everything from its own server: fonts as an npm package, images from `src/assets/`, the map as a link. It sets no cookies. It has no form, because that would need a service to process the submissions.
 
-Wünschen die Auftraggeber eine eingebettete Karte, ein Buchungs-Widget, Statistik oder ein Formular, erkläre vorher, dass dafür die Datenschutzerklärung angepasst und meist eine Einwilligung eingeholt werden muss. Baue es erst nach ihrer Bestätigung ein.
+If the clients want an embedded map, a booking widget, analytics or a form, explain first that the privacy policy has to be updated and that consent usually has to be obtained. Build it only after they confirm.
 
-## Suchmaschinen
+## Search engines
 
-`src/layouts/Base.astro` erzeugt Canonical, hreflang und strukturierte Daten aus dem Inhalt. Deine Aufgabe sind die Texte: `meta.title` mit höchstens 60 Zeichen, `meta.description` mit höchstens 155 Zeichen, beide je Seite eindeutig. `schemaType` in `business.ts` passt zur Branche.
+`src/layouts/Base.astro` generates canonical, hreflang and structured data from the content. Your job is the text: `meta.title` with at most 60 characters, `meta.description` with at most 155 characters, both unique per page. `schemaType` in `business.ts` matches the industry.
 
-## Veröffentlichen
+## Publishing
 
-Veröffentliche nur auf ausdrücklichen Wunsch.
+Publish only when explicitly asked.
 
-1. `SITE_DOMAIN` und `DEPLOY_HOST` stehen in `kit.env`. Fehlen sie, frag danach.
-2. Beim ersten Mal bereitet `npm run deploy:setup` den Server vor.
-3. `npm run deploy` baut und veröffentlicht. Erledigt ist der Schritt, wenn der Befehl die öffentliche Adresse als erreichbar meldet.
-4. Hat das Repo ein Remote, führe `git push` aus.
+1. `SITE_DOMAIN` and `DEPLOY_HOST` are in `kit.env`. If they are missing, ask for them.
+2. The first time, `npm run deploy:setup` prepares the server.
+3. `npm run deploy` builds and publishes. The step is done when the command reports the public address as reachable.
+4. If the repo has a remote, run `git push`.
 
-Bricht Schritt 3 wegen offener Platzhalter ab, nenne den Auftraggebern die fehlenden Angaben. Die Option `--allow-todos` nimmst du nur, wenn sie die Veröffentlichung mit Platzhaltern ausdrücklich verlangen.
+If step 3 aborts because of open placeholders, tell the clients which information is missing. Use the `--allow-todos` option only when they explicitly ask to publish with placeholders.

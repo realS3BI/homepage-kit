@@ -21,7 +21,7 @@ bash "$SCRIPTS/openclaw.sh" status
 
 info ""
 info "Inhalt"
-if grep -q '^Status: offen' "$ROOT_DIR/BRIEF.md" 2>/dev/null; then
+if grep -q '^Status: open' "$ROOT_DIR/BRIEF.md" 2>/dev/null; then
   warn "Das Onboarding ist noch offen (BRIEF.md)."
 else
   ok "Onboarding begonnen oder abgeschlossen (BRIEF.md)"

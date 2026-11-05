@@ -1,54 +1,54 @@
 # Brief
 
-Status: offen
+Status: open
 
-Der Agent füllt diese Datei während des Onboardings aus (`docs/onboarding.md`) und hält sie danach aktuell. Sie ist die Quelle für alles, was über den Betrieb bekannt ist. Mögliche Status: `offen`, `läuft`, `abgeschlossen`.
+The agent fills in this file during onboarding (`docs/onboarding.md`) and keeps it up to date afterwards. It is the source for everything known about the business. Possible statuses: `open`, `in progress`, `done`.
 
-## Betrieb
+## Business
 
 - Name:
-- Branche oder Fachrichtung:
-- Ort:
-- Zielgruppe:
-- Was Besucher tun sollen:
+- Industry or specialty:
+- Location:
+- Target audience:
+- What visitors should do:
 
-## Fakten
+## Facts
 
-- Adresse:
-- Telefon:
-- E-Mail:
-- Öffnungszeiten:
-- Terminvergabe:
+- Address:
+- Phone:
+- Email:
+- Opening hours:
+- Appointments:
 
-## Leistungen
+## Services
 
-## Personen
+## People
 
-## Häufige Fragen der Kunden
+## Frequent customer questions
 
-## Sprache und Ton
+## Language and tone
 
-- Anrede (Sie oder Du):
-- Sprachen der Website:
+- Form of address (Sie or Du):
+- Website languages:
 
-## Gestaltung
+## Design
 
-- Logo und Farben:
-- Gewählte Richtung:
+- Logo and colors:
+- Chosen direction:
 
-### Was aus den Beispielen folgt
+### What follows from the examples
 
-Je Vorbild eine Zeile: Datei oder Link, was daran gefällt, was die Website davon übernimmt (Aufbau, Farben, Schrift, Tonfall).
+One line per reference: file or link, what the clients like about it, what the website takes from it (layout, colors, typography, tone).
 
-## Rechtliches
+## Legal
 
-- Angaben für das Impressum:
-- Verantwortliche Stelle für den Datenschutz:
-- Rechtlich geprüft am:
+- Details for the imprint (Impressum):
+- Data controller for privacy:
+- Legally reviewed on:
 
-## Domain und Server
+## Domain and server
 
 - Domain:
 - Server:
 
-## Offene Punkte
+## Open items

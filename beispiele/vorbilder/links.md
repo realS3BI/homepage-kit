@@ -1,7 +1,7 @@
-# Vorbilder
+# References
 
-Eine Zeile je Website: Adresse, dann was daran gefällt.
+One line per website: address, then what you like about it.
 
-<!-- Beispiel:
-- https://example.at ruhige Farben, Öffnungszeiten sofort sichtbar
+<!-- Example:
+- https://example.at calm colors, opening hours visible right away
 -->

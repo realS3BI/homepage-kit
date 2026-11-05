@@ -1,38 +1,38 @@
 # homepage-kit
 
-Eine Vorlage für die Website eines kleinen Betriebs, die du per Chat pflegst. Du schreibst deinem OpenClaw auf Telegram, was sich ändern soll. Der Agent ändert die Website auf deinem Mac, du siehst das Ergebnis sofort in einer privaten Vorschau, und auf Zuruf veröffentlicht er sie auf deinem Server.
+A template for a small business website that you maintain through chat. You message your OpenClaw on Telegram with what should change. The agent edits the website on your Mac, you see the result right away in a private preview, and when you say so it publishes the site to your server.
 
-Die Vorlage ist für keine Branche festgelegt. Sie zeigt Platzhaltertexte eines erfundenen Betriebs, und der Agent ersetzt Inhalt und Gestaltung im ersten Gespräch durch deine eigenen.
+The template isn't tied to any industry. It shows placeholder text for a made-up business, and in the first conversation the agent replaces the content and design with your own.
 
-## So hängt es zusammen
+## How it fits together
 
 ```
-Telegram ──> OpenClaw ──> dieses Repo auf dem Mac
+Telegram ──> OpenClaw ──> this repo on the Mac
                               │
-                              ├─ Vorschau: Dienst auf dem Mac, über Tailscale auf Handy und Laptop erreichbar
+                              ├─ Preview: service on the Mac, reachable from phone and laptop via Tailscale
                               │
-                              └─ »Veröffentlichen« ──> VPS mit eigener Domain und HTTPS
+                              └─ "Publish" ──> VPS with your own domain and HTTPS
 ```
 
-- **Vorschau.** macOS startet einen Dev-Server beim Hochfahren und nach jedem Absturz neu. Tailscale macht ihn unter einer HTTPS-Adresse erreichbar, die nur deine eigenen Geräte öffnen können.
-- **Wächter.** OpenClaw prüft die Vorschau alle fünf Minuten und startet sie bei Bedarf neu.
-- **Skill.** OpenClaw bekommt einen Skill für diese Website. Seinen Namen und die Stichworte, bei denen er anspringt, legst du selbst fest.
-- **Website.** Statische Seiten mit Astro, auf Deutsch und Englisch, mit Impressum und Datenschutzerklärung. Keine Cookies, keine fremden Dienste.
+- **Preview.** macOS starts a dev server at boot and restarts it after every crash. Tailscale makes it reachable at an HTTPS address that only your own devices can open.
+- **Watchdog.** OpenClaw checks the preview every five minutes and restarts it if needed.
+- **Skill.** OpenClaw gets a skill for this website. You choose its name and the keywords that trigger it.
+- **Website.** Static pages built with Astro, in German and English, with imprint (Impressum) and privacy policy. No cookies, no third-party services.
 
-## Voraussetzungen
+## Requirements
 
-Ein Mac, der durchläuft, zum Beispiel ein Mac mini, mit:
+A Mac that stays on, for example a Mac mini, with:
 
-- [Homebrew](https://brew.sh) und Node.js ab 22.23: `brew install node git`
-- [Tailscale](https://tailscale.com/download), angemeldet. Im Adminbereich unter DNS müssen MagicDNS und HTTPS-Zertifikate aktiv sein.
-- OpenClaw, eingerichtet mit Telegram
+- [Homebrew](https://brew.sh) and Node.js 22.23 or later: `brew install node git`
+- [Tailscale](https://tailscale.com/download), signed in. In the admin console under DNS, MagicDNS and HTTPS certificates must be enabled.
+- OpenClaw, set up with Telegram
 
-Tailscale und OpenClaw sind beide optional. Ohne Tailscale läuft die Vorschau nur auf dem Mac, ohne OpenClaw arbeitest du mit Claude Code oder Codex direkt im Repo. Die Regeln für alle Agenten stehen in `AGENTS.md`.
+Tailscale and OpenClaw are both optional. Without Tailscale the preview only runs on the Mac; without OpenClaw you work with Claude Code or Codex directly in the repo. The rules for all agents are in `AGENTS.md`.
 
-## Einrichten
+## Setup
 
-1. Öffne [realS3BI/homepage-kit](https://github.com/realS3BI/homepage-kit), klick auf **Use this template** und lege ein eigenes, privates Repo an.
-2. Klone es nach `~/Developer`. Die Ordner Dokumente und Schreibtisch synchronisiert iCloud, dort fällt die Vorschau früher oder später aus.
+1. Open [realS3BI/homepage-kit](https://github.com/realS3BI/homepage-kit), click **Use this template** and create your own private repo.
+2. Clone it into `~/Developer`. iCloud syncs the Documents and Desktop folders, and the preview will fail there sooner or later.
 
    ```sh
    mkdir -p ~/Developer && cd ~/Developer
@@ -40,51 +40,51 @@ Tailscale und OpenClaw sind beide optional. Ohne Tailscale läuft die Vorschau n
    cd homepage-kit
    ```
 
-   Hast du in Schritt 1 ein eigenes Repo angelegt, klonst du stattdessen dessen Adresse.
+   If you created your own repo in step 1, clone its address instead.
 
-3. Starte das Setup:
+3. Run the setup:
 
    ```sh
    npm run setup
    ```
 
-Das Setup stellt vier Fragen und trägt die Antworten in `kit.env` ein:
+The setup asks four questions and writes the answers to `kit.env`:
 
-| Frage | Bedeutung |
+| Question | Meaning |
 | --- | --- |
-| Kurzname der Website | Steht im Namen der macOS-Dienste und des Wächters, zum Beispiel `homepage` |
-| Name des Skills | Damit rufst du den Agenten im Chat auf. Aus `website` wird `/website` |
-| Stichworte | Wörter, bei denen der Skill auch ohne Schrägstrich-Befehl anspringt, zum Beispiel „Firmenwebsite, unsere Homepage“ |
-| Port der Vorschau | Jede Website auf demselben Mac braucht einen eigenen |
+| Short name of the website | Used in the names of the macOS services and the watchdog, for example `homepage` |
+| Skill name | What you call the agent with in chat. `website` becomes `/website` |
+| Keywords | Words that trigger the skill even without the slash command, for example "Firmenwebsite, unsere Homepage" |
+| Preview port | Every website on the same Mac needs its own |
 
-Danach installiert es die Abhängigkeiten, richtet den Vorschau-Dienst ein, gibt ihn über Tailscale frei und installiert Skill und Wächter in OpenClaw. Am Ende zeigt es die Adresse der Vorschau.
+It then installs the dependencies, sets up the preview service, shares it via Tailscale and installs the skill and watchdog in OpenClaw. At the end it shows the preview address.
 
-Du kannst das Setup jederzeit erneut ausführen, auch um Skill-Namen, Stichworte oder Port zu ändern. Was unter den alten Namen lief, räumt es vorher weg.
+You can run the setup again at any time, including to change the skill name, keywords or port. It cleans up whatever ran under the old names first.
 
-Du kannst das auch OpenClaw überlassen. Ein Agent übergibt die Antworten als Optionen:
+You can also leave this to OpenClaw. An agent passes the answers as options:
 
-> Klone https://github.com/realS3BI/homepage-kit nach ~/Developer und führe im Repo `npm run setup -- --slug homepage --skill website --triggers "Firmenwebsite, unsere Homepage"` aus. Schick mir danach die Adresse der Vorschau.
+> Clone https://github.com/realS3BI/homepage-kit into ~/Developer and run `npm run setup -- --slug homepage --skill website --triggers "Firmenwebsite, unsere Homepage"` in the repo. Then send me the preview address.
 
-## Loslegen
+## Getting started
 
-Schreib deinem OpenClaw, hier mit dem Skill-Namen `website`:
+Message your OpenClaw, here with the skill name `website`:
 
 > /website Leg los
 
-Der Agent bittet zuerst um Beispiele und Material und stellt dann Fragen zum Betrieb, immer nur wenige auf einmal. Die Antworten hält er in `BRIEF.md` fest. Danach baut er die erste Fassung und schickt dir die Adresse der Vorschau.
+The agent first asks for examples and material, then asks questions about the business, only a few at a time. It records the answers in `BRIEF.md`. Then it builds the first draft and sends you the preview address.
 
-### Beispiele und Material
+### Examples and material
 
-Zeig dem Agenten, wie die Website aussehen soll. Schick ihm im Chat:
+Show the agent how the website should look. Send it in the chat:
 
-- Links und Bildschirmfotos von Websites, die dir gefallen
-- Logo, Fotos und vorhandene Texte
+- Links and screenshots of websites you like
+- Logo, photos and existing texts
 
-Der Agent legt alles im Ordner `beispiele/` ab, sieht es sich an und notiert in `BRIEF.md`, was er daraus für Aufbau, Farben, Schrift und Tonfall mitnimmt. Von fremden Websites übernimmt er die Richtung, er kopiert sie nicht. Dein eigenes Material verwendet er direkt.
+The agent stores everything in the `beispiele/` folder, looks at it and notes in `BRIEF.md` what it takes from it for layout, colors, typography and tone. From other people's websites it takes the direction; it doesn't copy them. Your own material it uses directly.
 
-Das geht jederzeit, nicht nur am Anfang. Ein Bildschirmfoto mit „so soll der Kopfbereich aussehen“ genügt.
+This works at any time, not just at the start. A screenshot with "this is how the header should look" is enough.
 
-### Im Alltag
+### Day to day
 
 > /website Am Freitag haben wir ab jetzt bis 14 Uhr offen
 >
@@ -94,17 +94,17 @@ Das geht jederzeit, nicht nur am Anfang. Ein Bildschirmfoto mit „so soll der K
 >
 > /website Mach die letzte Änderung rückgängig
 
-Jede Änderung wird ein eigener Git-Commit, deshalb lässt sich jede einzeln zurücknehmen.
+Every change becomes its own Git commit, so each one can be undone on its own.
 
-## Veröffentlichen
+## Publishing
 
-Solange Beispielinhalt oder Platzhalter mit `TODO` auf der Website stehen, verweigert der Befehl die Veröffentlichung. Das betrifft vor allem Impressum und Datenschutzerklärung. Lass beide vor dem ersten Veröffentlichen rechtlich prüfen.
+As long as sample content or `TODO` placeholders are on the website, the command refuses to publish. This mostly concerns the imprint and privacy policy. Have both legally reviewed before publishing for the first time.
 
-### Auf einem kleinen VPS
+### On a small VPS
 
-Du brauchst einen Server mit Ubuntu oder Debian, auf den du dich per SSH-Schlüssel anmelden kannst, und eine Domain, deren A-Record auf die IP des Servers zeigt. Die kleinste Größe jedes Anbieters reicht, weil der Server nur fertige Dateien ausliefert.
+You need a server running Ubuntu or Debian that you can log into with an SSH key, and a domain whose A record points to the server's IP. The smallest size from any provider is enough, because the server only serves finished files.
 
-1. Trag Domain und Server in `kit.env` ein:
+1. Enter the domain and server in `kit.env`:
 
    ```sh
    SITE_DOMAIN=musterbetrieb.at
@@ -112,69 +112,69 @@ Du brauchst einen Server mit Ubuntu oder Debian, auf den du dich per SSH-Schlüs
    DEPLOY_HOST=root@203.0.113.10
    ```
 
-2. Bereite den Server einmalig vor. Der Befehl installiert Docker und legt den Zielordner an.
+2. Prepare the server once. The command installs Docker and creates the target folder.
 
    ```sh
    npm run deploy:setup
    ```
 
-3. Veröffentliche:
+3. Publish:
 
    ```sh
    npm run deploy
    ```
 
-Der Befehl baut die Website auf dem Mac, kopiert die Dateien auf den Server und startet dort Caddy. Caddy holt und erneuert das HTTPS-Zertifikat selbst. Im Chat genügt später `/website Veröffentlichen`.
+The command builds the website on the Mac, copies the files to the server and starts Caddy there. Caddy obtains and renews the HTTPS certificate itself. Later, `/website Veröffentlichen` in the chat is enough.
 
-### Mit Coolify oder einer anderen Plattform
+### With Coolify or another platform
 
-Das `Dockerfile` baut ein Image, das die Website auf Port 80 ausliefert. Verbinde das Repo mit der Plattform, wähle Dockerfile als Build-Methode und trag die Domain dort ein. `SITE_DOMAIN` in `kit.env` muss trotzdem stimmen, daraus entstehen die Adressen für Suchmaschinen.
+The `Dockerfile` builds an image that serves the website on port 80. Connect the repo to the platform, choose Dockerfile as the build method and enter the domain there. `SITE_DOMAIN` in `kit.env` still has to be correct, because the addresses for search engines are generated from it.
 
-## Befehle
+## Commands
 
-| Befehl | Wirkung |
+| Command | Effect |
 | --- | --- |
-| `npm run setup` | Fragt Namen und Port ab, richtet Vorschau, Tailscale-Freigabe, Skill und Wächter ein |
-| `npm run status` | Zeigt den Zustand aller Teile und die offenen Platzhalter |
-| `npm run check` | Prüft Typen, baut die Website und listet Platzhalter |
-| `npm run preview:check` | Prüft die Vorschau und startet sie bei Bedarf neu |
-| `npm run preview:logs` | Zeigt die letzten Zeilen des Vorschau-Logs |
-| `npm run share` | Gibt die Vorschau über Tailscale frei |
-| `npm run deploy:setup` | Bereitet den Server einmalig vor |
-| `npm run deploy` | Baut und veröffentlicht die Website |
-| `npm run uninstall` | Entfernt Dienste, Freigabe, Skill und Wächter vom Mac |
+| `npm run setup` | Asks for names and port, sets up preview, Tailscale sharing, skill and watchdog |
+| `npm run status` | Shows the state of every part and the open placeholders |
+| `npm run check` | Checks types, builds the website and lists placeholders |
+| `npm run preview:check` | Checks the preview and restarts it if needed |
+| `npm run preview:logs` | Shows the last lines of the preview log |
+| `npm run share` | Shares the preview via Tailscale |
+| `npm run deploy:setup` | Prepares the server once |
+| `npm run deploy` | Builds and publishes the website |
+| `npm run uninstall` | Removes services, sharing, skill and watchdog from the Mac |
 
-## Mehrere Websites auf einem Mac
+## Several websites on one Mac
 
-Lege für jede Website ein eigenes Repo aus der Vorlage an und gib jeder beim Setup einen eigenen Kurznamen, Skill-Namen und Port. Dienste, Skills und Wächter tragen diese Namen und kommen sich nicht in die Quere.
+Create a separate repo from the template for each website and give each one its own short name, skill name and port during setup. Services, skills and watchdogs carry these names and don't get in each other's way.
 
-## Wenn etwas nicht geht
+## Troubleshooting
 
-**Die Vorschau lädt nicht.** `npm run status` zeigt, welcher Teil fehlt. `npm run preview:check` startet den Dienst neu, `npm run preview:logs` zeigt den Grund.
+**The preview doesn't load.** `npm run status` shows which part is missing. `npm run preview:check` restarts the service, `npm run preview:logs` shows why.
 
-**Der Agent antwortet auf Telegram nicht.** `openclaw channels status --deep` zeigt den Zustand des Kanals. Steht er auf „stopped“, hilft `openclaw gateway restart`.
+**The agent doesn't reply on Telegram.** `openclaw channels status --deep` shows the state of the channel. If it says "stopped", run `openclaw gateway restart`.
 
-**Die Tailscale-Adresse öffnet sich nicht.** Das Gerät, von dem du zugreifst, muss im selben Tailnet angemeldet sein. Meldet `npm run share` einen Fehler, fehlen im Tailscale-Adminbereich MagicDNS oder die HTTPS-Zertifikate.
+**The Tailscale address doesn't open.** The device you're using must be signed in to the same tailnet. If `npm run share` reports an error, MagicDNS or HTTPS certificates are missing in the Tailscale admin console.
 
-**Port belegt.** Führe `npm run setup` erneut aus und nenne einen anderen Port.
+**Port in use.** Run `npm run setup` again and choose a different port.
 
-**Nach einem Node-Update startet die Vorschau nicht.** Führe `npm run setup` erneut aus, dann zeigt der Dienst wieder auf das aktuelle Node.
+**The preview doesn't start after a Node update.** Run `npm run setup` again so the service points to the current Node.
 
-**Fehler -11 oder „Resource deadlock avoided“.** Das Repo liegt in einem iCloud-Ordner. Verschiebe es nach `~/Developer` und führe `npm run setup` erneut aus.
+**Error -11 or "Resource deadlock avoided".** The repo is in an iCloud folder. Move it to `~/Developer` and run `npm run setup` again.
 
-**Alarm bei Ausfall.** Trag in `kit.local.env` den Empfänger ein, etwa `WATCHDOG_ALERT_TO=telegram:123456789`, und führe `npm run setup` erneut aus. Nach zwei Fehlschlägen in Folge schickt OpenClaw eine Nachricht.
+**Alerts on failure.** Enter the recipient in `kit.local.env`, for example `WATCHDOG_ALERT_TO=telegram:123456789`, and run `npm run setup` again. After two failures in a row, OpenClaw sends a message.
 
-## Aufbau des Repos
+## Repo layout
 
-| Ort | Inhalt |
+| Location | Contents |
 | --- | --- |
-| `AGENTS.md` | Regeln und Ablauf für jeden KI-Agenten |
-| `BRIEF.md` | Was über den Betrieb bekannt ist, vom Agenten gepflegt |
-| `beispiele/` | Vorbilder und eigenes Material |
-| `docs/onboarding.md` | Ablauf des ersten Gesprächs |
-| `kit.env` | Einstellungen: Kurzname, Skill-Name, Stichworte, Port, Domain, Server |
-| `src/content/` | Alle Texte und Fakten der Website |
-| `src/styles/tokens.css` | Farben, Schriften, Abstände |
-| `scripts/` | Setup, Vorschau, OpenClaw, Veröffentlichung |
-| `openclaw/` | Vorlage des OpenClaw-Skills |
-| `deploy/`, `Dockerfile` | Konfiguration für den Server |
+| `AGENTS.md` | Rules and workflow for every AI agent |
+| `BRIEF.md` | What is known about the business, maintained by the agent |
+| `beispiele/` | References and own material |
+| `docs/onboarding.md` | How the first conversation goes |
+| `kit.env` | Settings: short name, skill name, keywords, port, domain, server |
+| `src/content/` | All texts and facts of the website |
+| `src/styles/tokens.css` | Colors, fonts, spacing |
+| `scripts/` | Setup, preview, OpenClaw, publishing |
+| `openclaw/` | OpenClaw skill template |
+| `deploy/`, `Dockerfile` | Server configuration |
